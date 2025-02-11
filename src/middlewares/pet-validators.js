@@ -2,13 +2,16 @@ import { body, param } from "express-validator";
 import { petExists } from "../helpers/db-validators.js";
 import { validarCampos } from "./validate-fields.js";
 import { handleErrors } from "./handle-errors.js";
+import { validateJWT } from "./validate-jwt.js";
+import { hasRoles } from "./validate-roles.js";
 
 export const createPetValidator = [
+    validateJWT,
+    hasRoles("ADMIN_ROLE"),
     body("name").notEmpty().withMessage("El nombre es requerido"),
     body("description").notEmpty().withMessage("La descripción es requerida"),
     body("age").isInt({ min: 0 }).withMessage("La edad debe ser un número entero positivo"),
     body("type").notEmpty().withMessage("El tipo es requerido"),
-    body("email").isEmail().withMessage("El correo del propietario es requerido y debe ser válido"),
     validarCampos,
     handleErrors
 ];

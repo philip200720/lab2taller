@@ -4,9 +4,9 @@ import { parse } from "date-fns";
 
 export const saveAppointment = async (req, res) => {
   try {
-    const data = req.body;
-
-    const isoDate = new Date(data.date);
+    const { date, pet } = req.body
+    const { usuario } = req
+    const isoDate = new Date(date);
 
     if (isNaN(isoDate.getTime())) {
       return res.status(400).json({
@@ -15,8 +15,8 @@ export const saveAppointment = async (req, res) => {
       });
     }
 
-    const pet = await Pet.findOne({ _id: data.pet });
-    if (!pet) {
+    const petRecord = await Pet.findOne({ _id: data.pet });
+    if (!petRecord) {
       return res.status(404).json({ 
         success: false, 
         msg: "No se encontró la mascota" 
@@ -24,8 +24,8 @@ export const saveAppointment = async (req, res) => {
     }
 
     const existAppointment = await Appointment.findOne({
-      pet: data.pet,
-      user: data.user,
+      pet,
+      user: usuario.uid,
       date: {
         $gte: new Date(isoDate).setHours(0, 0, 0, 0),
         $lt: new Date(isoDate).setHours(23, 59, 59, 999),
@@ -39,20 +39,19 @@ export const saveAppointment = async (req, res) => {
       });
     }
 
-    const appointment = new Appointment({ ...data, date: isoDate });
+    const appointment = new Appointment({ date: isoDate, pet, user:usuario.uid });
     await appointment.save();
 
     return res.status(200).json({
       success: true,
-      msg: `Cita creada exitosamente en fecha ${data.date}`,
+      msg: `Cita creada exitosamente en fecha ${date}`,
     });
     
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ 
       success: false, 
       msg: "Error al crear la cita", 
-      error 
+      error: error.message
     });
   }
 };

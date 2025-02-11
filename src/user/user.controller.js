@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url))
 export const getUserById = async (req, res) => {
     try{
-        const { uid } = req.params;
+        const { uid } = req;
         const user = await User.findById(uid)
 
         if(!user){
@@ -59,9 +59,9 @@ export const getUsers = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try{
-        const { uid } = req.params
+        const { usuario } = req
         
-        const user = await User.findByIdAndUpdate(uid, {status: false}, {new: true})
+        const user = await User.findByIdAndUpdate(usuario, {status: false}, {new: true})
 
         return res.status(200).json({
             success: true,
