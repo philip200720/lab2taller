@@ -56,3 +56,38 @@ export const saveAppointment = async (req, res) => {
     });
   }
 };
+
+export const getAppointments = async (req, res) => {
+  try{
+    const appointments = await Appointment.find()
+
+    return res.status(200).json({
+      success: true,
+      appointments: appointments
+  })
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      message: "Error al obtener las citas",
+      error: err.message
+    })
+  }
+}
+export const getAppointmentByUser = async (req, res) => {
+  try{
+    const { uid } = req.params;
+
+    const appointments = await Appointment.find({ user: uid });
+
+    return res.status(200).json({
+      success: true,
+      appointments: appointments
+  })
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      message: "Error al obtener la cita",
+      error: err.message
+  })
+  }
+}

@@ -17,7 +17,7 @@ JWT_SECRET=<tu_secreto_jwt>
 ### Citas
 
 - **Crear Cita**
-  - **URL:** `/api/appointments/createAppointment`
+  - **URL:** `/api/appointment/createAppointment`
   - **Método:** `POST`
   - **Cuerpo:**
     ```json
@@ -28,6 +28,14 @@ JWT_SECRET=<tu_secreto_jwt>
       "user": "<user_id>"
     }
     ```
+
+- **Obtener Citas**
+  - **URL:** `/api/appointment/`
+  - **Método:** `GET`
+
+- **Obtener Citas de usuario**
+  - **URL:** `/api/appointment/findAppointment/:uid`
+  - **Método:** `GET`
 
 ### Usuarios
 
@@ -72,6 +80,10 @@ JWT_SECRET=<tu_secreto_jwt>
       "newPassword": "string"
     }
     ```
+- **Actualizar Foto del Usuario**
+    - **URL:** `/adoptionSystem/v1/user/updateProfilePicture/:uid`
+    - **Método:** `PATCH`
+    - **Cuerpo:** `Adjuntar image/png, image/jpg, image/jpeg`
 
 ### Mascotas
 
@@ -112,9 +124,6 @@ JWT_SECRET=<tu_secreto_jwt>
 ## Funcionalidades Adicionales
 
 Las siguientes funcionalidades necesitan ser desarrolladas:
-
-1. **Actualizar Foto del Usuario**
-   - Descripción: Implementar funcionalidad para actualizar la foto de perfil del usuario.
 
 2. **Listar Citas**
    - Descripción: Implementar funcionalidad para listar todas las citas de un usuario.
